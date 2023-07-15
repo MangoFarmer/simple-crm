@@ -1,9 +1,10 @@
+# CircleCI configuration syntax version
 version: 2.1
 jobs:
   build:
-   # Run this job in a container based on the specified Docker image
-  docker:
-    # Specify container image
+    # Run this job in a container based on the specified Docker image
+   docker:
+     # Specify container image
       - image: cimg/openjdk:17.0.7
     steps:
       # Fetch source code from the repo
