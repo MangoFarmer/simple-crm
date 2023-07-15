@@ -1,0 +1,26 @@
+version: 2.1
+jobs:
+  build:
+   # Run this job in a container based on the specified Docker image
+  docker:
+    # Specify container image
+      - image: cimg/openjdk:17.0.7
+    steps:
+      # Fetch source code from the repo
+      - checkout
+
+      # Package into a jar
+      - run: mvn clean package
+
+      # Configures CircleCI to use Docker
+      - setup_remote_docker
+
+      - run:
+          name: Build and Push Docker Image
+          # Build docker image and tag it with commit SHA, then push to Docker Hub
+          command: |
+            docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PWD}
+            docker build -t ${DOCKER_HUB_USERNAME}/simple-crm:${CIRCLE_SHA1} .
+            docker build -t ${DOCKER_HUB_USERNAME}/simple-crm:latest .
+            docker push ${DOCKER_HUB_USERNAME}/simple-crm:${CIRCLE_SHA1}
+            docker push ${DOCKER_HUB_USERNAME}/simple-crm:latest
