@@ -1,22 +1,22 @@
 # CircleCI configuration syntax version
 version: 2.1
 jobs:
-  build:
-    # Run this job in a container based on the specified Docker image
+ build:
+   # Run this job in a container based on the specified Docker image
    docker:
      # Specify container image
-      - image: cimg/openjdk:17.0.7
-    steps:
-      # Fetch source code from the repo
-      - checkout
+     - image: cimg/openjdk:17.0.7
+   steps:
+     # Fetch source code from the repo
+     - checkout
+         
+     # Package into a jar
+     - run: mvn clean package
 
-      # Package into a jar
-      - run: mvn clean package
-
-      # Configures CircleCI to use Docker
-      - setup_remote_docker
-
-      - run:
+     # Configures CircleCI to use Docker
+     - setup_remote_docker
+     
+     - run:
           name: Build and Push Docker Image
           # Build docker image and tag it with commit SHA, then push to Docker Hub
           command: |
